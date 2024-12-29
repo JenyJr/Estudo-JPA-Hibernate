@@ -6,6 +6,7 @@
     <!-- unidade de persistencia: a unidade conexao que o emf vai se conectar ao BD especifico-->
     <persistence-unit name="conexao">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!-- Mapeamento das entidades para o JPA-->
         <class>modelo.basico.Usuario</class>
         <class>modelo.basico.Produto</class>
         <properties>

@@ -4,12 +4,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
+import modelo.basico.Produto;
 
 import java.util.List;
 
 public class DAO<E> {
 
-    //atributo estatico, para todo DAO criado, ele automaticamente vai inicializar esse metodo
+    //atributo estatico. para todo DAO criado, ele automaticamente vai inicializar esse atributo
     private static EntityManagerFactory emf;
 
     private EntityManager em;
@@ -43,21 +44,34 @@ public class DAO<E> {
         return this;
     }
 
+    public DAO<E> removerT(int id){
+       E remover = em.find(classe, id);
+       if (remover != null){
+           em.remove(remover);
+       }
+        return this;
+    }
+
     public DAO<E> inserirT(E entidade){
         em.persist(entidade);
         return this;
     }
 
-    public DAO<E> fecharT(){
+    public DAO<E> comitarT(){
         if (em != null && em.isOpen()){
             em.getTransaction().commit();
         }
         return this;
     }
 
+    public DAO<E> fechar(){
+        em.close();
+        return this;
+    }
+
     //encapsulamento de metodos.
-    public DAO<E> IncluirTudo(E entidade){
-        return abrirT().inserirT(entidade).fecharT();
+    public DAO<E> incluirTudo(E entidade){
+        return abrirT().inserirT(entidade).comitarT();
     }
 
     public List<E> obterTodos(){
@@ -70,7 +84,7 @@ public class DAO<E> {
             throw new UnsupportedOperationException("Classe nula");
         }
         //comando sql
-        String jpql = "select e from " + classe.getName() + "e";
+        String jpql = "select e from " + classe.getName() + " e";
 
         //criando uma consulta no BD
         TypedQuery<E> querry = em.createQuery(jpql, classe);

@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 //anotação obrigatória, define que a classe é uma entidade no banco de dados
 @Entity
 public class Usuario {
-// anotação obrigatória, define que o atributo é a chave primária do banco de dados e terá um gerador auto incremetado(generatedvalue)
+// anotação obrigatória, define que o atributo é a chave primária no banco de dados e terá um gerador auto incrementado(generatedvalue)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
